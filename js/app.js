@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (viewId === 'view-home') {
             btnBack.classList.add('hidden');
-            // 👇 トップに戻ったとき、すべてのツールの中身をリセットする
+            // トップに戻ったとき、すべてのツールの中身をリセットする
             resetAllTools();
         } else {
             btnBack.classList.remove('hidden');
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- 7. ルーレット ---
         document.getElementById('roulette-result')?.classList.add('hidden');
-        // ※ ルーレットの入力項目や履歴は残しておいた方が親切なので、当選文字の非表示だけに留めています
     }
 
     cards.forEach(card => {
@@ -88,11 +87,41 @@ document.addEventListener('DOMContentLoaded', () => {
     initMedia();
     initQR();
     initRoulette();
+
+    // ==========================================
+    // 📢 お知らせポップアップ（モーダル）の制御
+    // ==========================================
+    const newsModal = document.getElementById('news-modal');
+    const btnOpenNews = document.getElementById('btn-open-news');
+    const btnCloseNews = document.getElementById('btn-close-news');
+
+    // 1. アクセス時に自動でポップアップを表示
+    if (newsModal) {
+        newsModal.classList.remove('hidden');
+    }
+
+    // 2. 閉じるボタン（×）を押したとき
+    btnCloseNews?.addEventListener('click', () => {
+        newsModal.classList.add('hidden');
+    });
+
+    // 3. 背景の黒い部分をクリックしたときも閉じる
+    newsModal?.addEventListener('click', (e) => {
+        if (e.target === newsModal) {
+            newsModal.classList.add('hidden');
+        }
+    });
+
+    // 4. 「更新履歴を見る」ボタンを押したとき
+    btnOpenNews?.addEventListener('click', () => {
+        newsModal?.classList.remove('hidden');
+    });
 });
 
 // 共通トースト通知
 export function showToast(message, isError = false) {
     const toast = document.getElementById('error-toast');
+    if (!toast) return;
     toast.textContent = message;
     toast.style.borderLeft = isError ? "5px solid #fa5252" : "5px solid #40c057";
     toast.classList.remove('hidden');
