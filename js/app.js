@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- 7. ルーレット ---
         document.getElementById('roulette-result')?.classList.add('hidden');
+
+        // --- 8. お問い合わせ ---
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) contactForm.reset();
     }
 
     cards.forEach(card => {
@@ -117,6 +121,26 @@ document.addEventListener('DOMContentLoaded', () => {
         newsModal?.classList.remove('hidden');
     });
 });
+
+// ==========================================
+    // ✉️ お問い合わせフォームの送信制御
+    // ==========================================
+    const contactForm = document.getElementById('contact-form');
+    const iframe = document.getElementById('hidden_iframe');
+    let isSubmitting = false;
+
+    contactForm?.addEventListener('submit', () => {
+        isSubmitting = true; // 送信開始フラグを立てる
+    });
+
+    // iframeが読み込まれたとき（送信が裏で完了したとき）の処理
+    iframe?.addEventListener('load', () => {
+        if (isSubmitting) {
+            showToast('お問い合わせを送信しました。ありがとうございました！');
+            contactForm.reset(); // 入力欄をクリア
+            isSubmitting = false;
+        }
+    });
 
 // 共通トースト通知
 export function showToast(message, isError = false) {
