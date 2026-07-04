@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetAllTools() {
         // --- 1. YouTube No-Cookie ---
         const iframeNocookie = document.getElementById('yt-iframe-nocookie');
-        if (iframeNocookie) iframeNocookie.src = ''; // srcを空にすることで動画の再生が完全に止まります！
+        if (iframeNocookie) iframeNocookie.src = ''; 
         const inputNocookie = document.getElementById('yt-url-nocookie');
         if (inputNocookie) inputNocookie.value = '';
         document.getElementById('res-yt-nocookie-box')?.classList.add('hidden');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- 3. 画像形式変換 ---
         const imgInput = document.getElementById('img-file-input');
-        if (imgInput) imgInput.value = ''; // 選択されたファイルをクリア
+        if (imgInput) imgInput.value = ''; 
         document.getElementById('res-img-box')?.classList.add('hidden');
 
         // --- 4. 音声形式変換 ---
@@ -63,9 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- 7. ルーレット ---
         document.getElementById('roulette-result')?.classList.add('hidden');
 
-        // --- 8. お問い合わせ ---
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) contactForm.reset();
+        // --- 8. お問い合わせ（埋め込みiframeのリセット） ---
+        const contactIframe = document.getElementById('contact-iframe');
+        if (contactIframe) {
+            // 次回開いたときのために「読み込み中...」の表示を復活させる
+            document.getElementById('loader-contact')?.classList.remove('hidden');
+            // srcを再代入することで、フォームを送信後の画面から初期画面にリフレッシュする
+            contactIframe.src = contactIframe.src;
+        }
     }
 
     cards.forEach(card => {
@@ -121,26 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         newsModal?.classList.remove('hidden');
     });
 });
-
-// ==========================================
-    // ✉️ お問い合わせフォームの送信制御
-    // ==========================================
-    const contactForm = document.getElementById('contact-form');
-    const iframe = document.getElementById('hidden_iframe');
-    let isSubmitting = false;
-
-    contactForm?.addEventListener('submit', () => {
-        isSubmitting = true; // 送信開始フラグを立てる
-    });
-
-    // iframeが読み込まれたとき（送信が裏で完了したとき）の処理
-    iframe?.addEventListener('load', () => {
-        if (isSubmitting) {
-            showToast('お問い合わせを送信しました。ありがとうございました！');
-            contactForm.reset(); // 入力欄をクリア
-            isSubmitting = false;
-        }
-    });
 
 // 共通トースト通知
 export function showToast(message, isError = false) {
