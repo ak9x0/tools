@@ -68,6 +68,12 @@
                     <p>確率を設定できる、アニメーション付きのルーレットです。</p>
                     <button class="btn-primary">開く</button>
                 </div>
+                <div class="card" data-target="view-contact">
+                    <div class="card-icon">✉️</div>
+                    <h3>お問い合わせ</h3>
+                    <p>不具合報告や機能の要望など、開発者へメッセージを送ります。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
             </div>
         </section>
 
@@ -200,6 +206,34 @@
                 <ul id="roulette-log"></ul>
                 <button id="btn-copy-history" class="btn-secondary hidden">履歴をコピー</button>
             </div>
+        </section>
+
+        <section id="view-contact" class="view hidden">
+            <h2>✉️ お問い合わせ</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 20px; color: var(--secondary-color);">
+                ツールに関するご意見、ご要望、不具合報告などを受け付けています。
+            </p>
+
+            <form action="https://docs.google.com/forms/d/e/【あなたのフォームID】/formResponse" method="POST" target="hidden_iframe" id="contact-form">
+                
+                <div class="control-panel" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                    <label style="display: flex; flex-direction: column; gap: 5px;">
+                        <strong>メールアドレス (任意)</strong>
+                        <input type="email" name="entry.123456789" placeholder="example@email.com" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color);">
+                    </label>
+
+                    <label style="display: flex; flex-direction: column; gap: 5px;">
+                        <strong>お問い合わせ内容 <span style="color: #fa5252;">*</span></strong>
+                        <textarea name="entry.987654321" rows="5" placeholder="こちらに入力してください" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); resize: vertical;"></textarea>
+                    </label>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <button type="submit" class="btn-primary" style="padding: 10px 30px;">メッセージを送信</button>
+                </div>
+            </form>
+
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </section>
     </main>
 
