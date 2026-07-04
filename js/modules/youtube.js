@@ -10,7 +10,7 @@ function extractYoutubeId(url) {
 export function initYoutube() {
     // --- 1. No-Cookie 変換機能 ---
     const inputNocookie = document.getElementById('yt-url-nocookie');
-    const btnNocookie = document.getElementById('btn-nocookie');
+    const btnNocookie = document.getElementById('btn-yt-nocookie');
     const outNocookie = document.getElementById('yt-out-nocookie');
     const boxNocookie = document.getElementById('res-yt-nocookie-box');
     const btnCopyNocookie = document.getElementById('btn-copy-nocookie');
