@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マルチ便利ツールボックス</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1 id="site-title" style="cursor: pointer;">ToolBox</h1>
+            <button id="theme-toggle" class="btn-secondary">🌙 ダークモード</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="error-toast" class="toast hidden"></div>
+
+        <section id="view-home" class="view">
+            <h2 class="section-title">ツール一覧</h2>
+            <div class="grid">
+                <div class="card" data-target="view-yt-nocookie">
+                    <div class="card-icon">🔒</div>
+                    <h3>YouTube No-Cookie変換</h3>
+                    <p>プライバシーに配慮した埋め込み用URLに変換します。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+                <div class="card" data-target="view-yt-thumb">
+                    <div class="card-icon">🖼️</div>
+                    <h3>YouTubeサムネイル取得</h3>
+                    <p>動画URLから最高画質のサムネイル画像を抽出します。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+                <div class="card" data-target="view-img-convert">
+                    <div class="card-icon">🔄</div>
+                    <h3>画像形式変換</h3>
+                    <p>PNG/JPEG/WEBP/BMPの相互変換と品質調整が可能です。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+                <div class="card" data-target="view-audio-convert">
+                    <div class="card-icon">🎵</div>
+                    <h3>音声形式変換</h3>
+                    <p>ブラウザ上で音声をWAVなどの形式に変換します。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+                <div class="card" data-target="view-compress">
+                    <div class="card-icon">🗜️</div>
+                    <h3>ファイル圧縮</h3>
+                    <p>画像の軽量化や、複数ファイルのZIPまとめ圧縮を行います。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+                <div class="card" data-target="view-qrcode">
+                    <div class="card-icon">📱</div>
+                    <h3>QRコード生成</h3>
+                    <p>文字やURLから、オプション付きのQRコードを作成します。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+                <div class="card" data-target="view-roulette">
+                    <div class="card-icon">🎯</div>
+                    <h3>重み付きルーレット</h3>
+                    <p>確率を設定できる、アニメーション付きのルーレットです。</p>
+                    <button class="btn-primary">開く</button>
+                </div>
+            </div>
+        </section>
+
+        <button id="btn-back" class="btn-secondary hidden">← ツール一覧に戻る</button>
+
+        <section id="view-yt-nocookie" class="view hidden">
+            <h2>🔒 YouTube No-Cookie変換</h2>
+            <div class="input-group">
+                <input type="text" id="yt-url-nocookie" placeholder="YouTubeの動画URLを入力...">
+                <button id="btn-yt-nocookie" class="btn-primary">変換</button>
+            </div>
+            <div class="result-box hidden" id="res-yt-nocookie-box">
+                <input type="text" id="yt-out-nocookie" readonly>
+                <button id="btn-copy-nocookie" class="btn-success">コピー</button>
+            </div>
+        </section>
+
+        <section id="view-yt-thumb" class="view hidden">
+            <h2>🖼️ YouTubeサムネイル取得</h2>
+            <div class="input-group">
+                <input type="text" id="yt-url-thumb" placeholder="YouTubeの動画URLを入力...">
+                <button id="btn-yt-thumb" class="btn-primary">取得</button>
+            </div>
+            <div id="loader-thumb" class="loader hidden">解析中...</div>
+            <div class="result-box hidden" id="res-yt-thumb-box">
+                <div class="thumb-preview-container">
+                    <img id="yt-thumb-img" src="" alt="サムネイルプレビュー">
+                </div>
+                <div class="btn-group">
+                    <a id="btn-open-thumb" target="_blank" class="btn-secondary">画像を開く</a>
+                    <button id="btn-dl-thumb" class="btn-success">ダウンロード</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-img-convert" class="view hidden">
+            <h2>🔄 画像形式変換</h2>
+            <div class="dropzone" id="img-dropzone">ここに画像をドラッグ＆ドロップ、またはクリックして選択</div>
+            <input type="file" id="img-file-input" accept="image/*" class="hidden">
+            
+            <div class="control-panel">
+                <label>変換先フォーマット:
+                    <select id="img-target-format">
+                        <option value="image/png">PNG</option>
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/webp">WEBP</option>
+                    </select>
+                </label>
+                <label>品質 (JPEG/WEBP): <span id="img-quality-val">0.8</span>
+                    <input type="range" id="img-quality" min="0.1" max="1.0" step="0.1" value="0.8">
+                </label>
+            </div>
+            <div class="result-box hidden" id="res-img-box">
+                <p>変換が完了しました</p>
+                <button id="btn-dl-img" class="btn-success">ダウンロード</button>
+            </div>
+        </section>
+
+        <section id="view-audio-convert" class="view hidden">
+            <h2>🎵 音声形式変換</h2>
+            <blockquote>
+                <strong>※ブラウザ制限事項:</strong> 完全なMP3/OGGエンコードには重い外部ライブラリが必要なため、本ツールは安全かつ高速な<strong>WAV形式（無圧縮・高音質）</strong>への変換に対応しています。
+            </blockquote>
+            <div class="dropzone" id="audio-dropzone">ここに音声ファイルをドラッグ＆ドロップ</div>
+            <input type="file" id="audio-file-input" accept="audio/*" class="hidden">
+            <div id="loader-audio" class="loader hidden">音声処理中...</div>
+            <div class="result-box hidden" id="res-audio-box">
+                <button id="btn-dl-audio" class="btn-success">WAV形式でダウンロード</button>
+            </div>
+        </section>
+
+        <section id="view-compress" class="view hidden">
+            <h2>🗜️ ファイル圧縮</h2>
+            <div class="dropzone" id="comp-dropzone">ここにファイルをドロップ（複数可 / 画像は軽量化、その他はZIP化）</div>
+            <input type="file" id="comp-file-input" multiple class="hidden">
+            <div id="loader-comp" class="loader hidden">圧縮処理中...</div>
+            <div class="result-box hidden" id="res-comp-box">
+                <button id="btn-dl-comp" class="btn-success">圧縮ファイルをダウンロード</button>
+            </div>
+        </section>
+
+        <section id="view-qrcode" class="view hidden">
+            <h2>📱 QRコード生成</h2>
+            <div class="input-group">
+                <input type="text" id="qr-text" placeholder="URLまたはテキストを入力...">
+                <button id="btn-gen-qr" class="btn-primary">生成</button>
+            </div>
+            <div class="control-panel">
+                <label>サイズ:
+                    <select id="qr-size">
+                        <option value="128">128x128</option>
+                        <option value="256" selected>256x256</option>
+                        <option value="512">512x512</option>
+                    </select>
+                </label>
+                <label>誤り訂正:
+                    <select id="qr-correct">
+                        <option value="L">L (7%)</option>
+                        <option value="M" selected>M (15%)</option>
+                        <option value="Q">Q (25%)</option>
+                        <option value="H">H (30%)</option>
+                    </select>
+                </label>
+            </div>
+            <div class="result-box hidden" id="res-qr-box">
+                <div id="qrcode-output"></div>
+                <button id="btn-dl-qr" class="btn-success">PNGとして保存</button>
+            </div>
+        </section>
+
+        <section id="view-roulette" class="view hidden">
+            <h2>🎯 重み付きルーレット</h2>
+            <div class="roulette-layout">
+                <div class="roulette-setup">
+                    <label>項目と重み（「項目,重み」で改行区切り）
+                        <textarea id="roulette-items" rows="6" placeholder="大吉,5&#10;中吉,10&#10;小吉,20&#10;凶,1"></textarea>
+                    </label>
+                    <button id="btn-spin" class="btn-primary">スタート！</button>
+                </div>
+                <div class="roulette-display">
+                    <canvas id="roulette-canvas" width="300" height="300"></canvas>
+                    <div id="roulette-result" class="result-badge hidden"></div>
+                </div>
+            </div>
+            <div class="roulette-history">
+                <h3>履歴</h3>
+                <ul id="roulette-log"></ul>
+                <button id="btn-copy-history" class="btn-secondary hidden">履歴をコピー</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
