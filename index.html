@@ -214,26 +214,21 @@
                 ツールに関するご意見、ご要望、不具合報告などを受け付けています。
             </p>
 
-            <form action="https://docs.google.com/forms/d/e/1FAIpQLScXMv4mUa8xMUo9J0TovcGVtvKqKs7sekTJvlHH-6A7F6ijXg/formResponse" method="POST" target="hidden_iframe" id="contact-form">
-                
-                <div class="control-panel" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
-                    <label style="display: flex; flex-direction: column; gap: 5px;">
-                        <strong>メールアドレス (任意)</strong>
-                        <input type="email" name="entry.123456789" placeholder="example@email.com" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color);">
-                    </label>
+            <div id="loader-contact" class="loader">フォームを読み込み中...</div>
 
-                    <label style="display: flex; flex-direction: column; gap: 5px;">
-                        <strong>お問い合わせ内容 <span style="color: #fa5252;">*</span></strong>
-                        <textarea name="entry.987654321" rows="5" placeholder="こちらに入力してください" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); resize: vertical;"></textarea>
-                    </label>
-                </div>
-
-                <div style="margin-top: 20px; text-align: center;">
-                    <button type="submit" class="btn-primary" style="padding: 10px 30px;">メッセージを送信</button>
-                </div>
-            </form>
-
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+            <div class="contact-embed-container" style="width: 100%; max-width: 640px; margin: 0 auto; border-radius: 12px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--border-color);">
+                <iframe id="contact-iframe" 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLScXMv4mUa8xMUo9J0TovcGVtvKqKs7sekTJvlHH-6A7F6ijXg/viewform?embedded=true" 
+                    width="100%" 
+                    height="650" 
+                    frameborder="0" 
+                    marginheight="0" 
+                    marginwidth="0"
+                    style="display: block; width: 100%;"
+                    onload="document.getElementById('loader-contact').classList.add('hidden');">
+                    読み込み中…
+                </iframe>
+            </div>
         </section>
     </main>
 
